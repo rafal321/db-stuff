@@ -1,8 +1,6 @@
 #!/bin/bash
 # script based on https://github.com/emersongaudencio/ansible-mariadb-galera-cluster
 
-# script works only if run as  mysql root user
-
 today=$(date +%F)
 backup_path="/backup-mysql"
 general_log_file="$backup_path/general_bkp-full_$today.log"
