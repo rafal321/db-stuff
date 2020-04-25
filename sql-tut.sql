@@ -2,7 +2,7 @@
 
 
 
-# -----------video 122-114 ----------------------------
+# -----------Stored routines 122-114 ----------------------------
 CREATE TABLE bank(
 acc_id INT NOT NULL AUTO_INCREMENT,
 balance numeric(8,2),
