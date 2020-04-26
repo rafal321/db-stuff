@@ -214,3 +214,47 @@ insert into products (value) values (500);
 update products set value = 102 where id=1;
 select * from products;
 
+# ----- 126 triggers and transactions ---------------------
+
+show tables;
+
+create table sales(id int primary key auto_increment, product varchar(45) not null, sold numeric(8,2) not null);
+
+create table sales_totals(id int primary key auto_increment, total numeric(11,2) not null, day date);
+
+alter table sales_totals add unique (day);
+
+show index from sales_totals;
+
+
+delimiter $$
+create trigger before_sales_insert before insert on sales for each row
+begin
+
+	declare today date default date(now());
+	declare count int default 0;
+
+	select count(*) from sales_totals where day = today into count for update;
+    					# raf: for update will lock entire table unless we have index on day comumn
+    					# unique is by the way an index too - add unique (day); - so we ok here
+    if count = 0 then
+		insert into sales_totals (total, day) values (new.sold, today);
+	else
+		update sales_totals set total = total + new.sold where day = today;
+	end if;
+
+end$$
+delimiter ;
+
+drop trigger before_sales_insert;
+
+select * from sales;
+select * from sales_totals;
+
+# START TRANSACTION;  Raf: this trigger runs in a single transaction by default
+insert into sales (product, sold) values ("Dog Lead Deluxe", 10.00);
+# COMMIT;
+
+set sql_safe_updates=0;
+delete from sales;
+delete from sales_totals;
