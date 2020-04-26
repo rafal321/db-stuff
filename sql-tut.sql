@@ -152,5 +152,65 @@ SELECT * FROM leads LIMIT 10;
 CREATE TABLE users2 AS SELECT * FROM users LIMIT 10;
 CREATE TABLE users3 AS SELECT email FROM users LIMIT 10;
 
+# ----- 125 triggers ----------------------------
+USE company1;
 
+create table sales(
+id int primary KEY AUTO_INCREMENT,
+product varchar(30) not NULL,
+value numeric(10,2));
+
+create table sales_update(
+id int primary key auto_increment, 
+product_id int not null, 
+changed_at timestamp,
+before_value numeric(10,2) not null, 
+after_value numeric(10,2) not NULL);
+# - - - - - -
+
+INSERT INTO sales (product, VALUE) VALUES('Onion', 0.10);
+UPDATE sales SET VALUE = 4.22 WHERE id = 1;
+SELECT * FROM sales;
+
+# events: Update, Insert, Delete   time: Before, After
+
+delimiter $$
+create trigger before_sales_update before update on sales for each row
+begin
+
+	insert into sales_update(product_id, changed_at, before_value, after_value)
+		value (old.id, now(), old.value, new.value);
+
+end$$
+delimiter ;
+
+SELECT * FROM sales_update;
+
+# ----- 126 trigger validation ---------------------
+
+drop table products;
+create table products (id int primary key auto_increment, value numeric(10,2) not null);
+
+set delimiter $$
+create trigger before_products_insert before insert on products for each row
+begin
+
+	if new.value > 100.0 then
+		set new.value := 100.0;
+    end if;
+
+end$$
+create trigger before_products_update before update on products for each row
+begin
+
+	if new.value > 100.0 then
+		set new.value := 100.0;
+    end if;
+
+end$$
+set delimiter ;
+
+insert into products (value) values (500);
+update products set value = 102 where id=1;
+select * from products;
 
