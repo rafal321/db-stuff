@@ -1,5 +1,6 @@
 #!/bin/bash
 # script based on https://github.com/emersongaudencio/ansible-mariadb-galera-cluster
+# yum install https://github.com/maxbube/mydumper/releases/download/v0.9.5/mydumper-0.9.5-2.el7.x86_64.rpm
 
 today=$(date +%F)
 backup_path="/backup-mysql"
