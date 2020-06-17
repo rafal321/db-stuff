@@ -42,3 +42,32 @@ else
   echo "[`date +%d/%m/%Y" "%H:%M:%S`] - DB Data-Only backup has been failed!" >> $general_log_file
 fi
 
+_______________________________________________________________________
+CREATE USER 'replication_user'@'%' IDENTIFIED BY 'bigs3cret';
+GRANT REPLICATION SLAVE ON *.* TO 'replication_user'@'%';
+FLUSH PRIVILEGES;
+
+# wszystko odbywa sie jak server slave is running
+mysql --force < structure_full_2020-06-17.sql
+myloader -t 4 -d /root/bkp/data/
+mysql --force < routines_full_2020-06-17.sql
+mysql --force < triggers_full_2020-06-17.sql
+
+CHANGE MASTER TO
+MASTER_HOST='10.35.241.226',
+MASTER_USER='replication_user',
+MASTER_PASSWORD='bigs3cret',
+MASTER_PORT=3306,
+MASTER_LOG_FILE='bin.000005',
+MASTER_LOG_POS=6103816,
+MASTER_CONNECT_RETRY=10;
+START SLAVE;
+
+SHOW SLAVE STATUS \G
+SHOW TRIGGERS FROM sakila\G
+SHOW PROCEDURE STATUS\G
+SHOW PROCEDURE STATUS WHERE db='sakila'\G
+
+STOP SLAVE;
+CHANGE MASTER TO MASTER_USE_GTID = slave_pos;
+START SLAVE;
