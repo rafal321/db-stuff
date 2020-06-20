@@ -40,7 +40,7 @@ for db in $(mysql -B -s -e 'Select distinct Table_schema from information_Schema
 do
 echo " Performing backup of Database : "$db
   # backup each database in a separate file
-  mysqldump "$db" --single-transaction --triggers --routines > "$BACKUP_DIR/$db.sql"
+  mysqldump "$db" --single-transaction --routines --triggers --events > "$BACKUP_DIR/$db.sql"
 done
 
 # Script Runetime ---
