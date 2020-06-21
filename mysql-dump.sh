@@ -16,7 +16,9 @@ mysql --force < 4-triggers-2020-06-20.sql
 # SELECT * FROM `information_schema`.`VIEWS` LIMIT 1000\G
 # SELECT * FROM `information_schema`.`INNODB_SYS_INDEXES` ORDER BY 2 LIMIT 1000;
 # SELECT * FROM `information_schema`.`COLUMNS` WHERE TABLE_SCHEMA NOT IN ('mysql', 'information_schema', 'performance_schema') LIMIT 1000;
-
+# ----
+mysqldump --single-transaction --routines --triggers --events company | gzip > company_db-$(date +%F).dmp.gz
+gunzip company_db-2020-02-21.dmp.gz
 # #############################################################################
 # #############################################################################
 
