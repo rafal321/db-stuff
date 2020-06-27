@@ -32,7 +32,9 @@ databases=`mysql -e "SELECT replace(GROUP_CONCAT(SCHEMA_NAME),',',' ') as list_d
 # Option 1
 # mysqldump --single-transaction --skip-lock-tables --routines --events --triggers --databases ${databases} > dump2-${today}.sql
 
-
+# Option 2
+mysqldump --single-transaction --skip-lock-tables --routines --events --triggers --databases ${databases} | gzip > dump4-${today}.sql.gz
+# To restore:    gunzip < dump3-2020-06-27.sql.gz | mysql
 
 # #############################################################################
 # #############################################################################
