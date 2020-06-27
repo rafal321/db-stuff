@@ -21,6 +21,21 @@ mysqldump --single-transaction --routines --triggers --events company | gzip > c
 gunzip company_db-2020-02-21.dmp.gz
 # #############################################################################
 # #############################################################################
+#!/bin/bash
+# INFO: https://serversforhackers.com/c/mysqldump-with-modern-mysql
+# simple mysqldump - dump some databases with all its components > explains why --skip-lock-tables is used ...
+
+today=$(date +%F)
+databases=`mysql -e "SELECT replace(GROUP_CONCAT(SCHEMA_NAME),',',' ') as list_databases FROM information_schema.SCHEMATA WHERE SCHEMA_NAME NOT IN('common_schema', 'information_schema','mysql','performance_schema','sys');" | tr -d "|" | grep -v list_databases`
+# echo "List: ${databases}"
+
+# Option 1
+# mysqldump --single-transaction --skip-lock-tables --routines --events --triggers --databases ${databases} > dump2-${today}.sql
+
+
+
+# #############################################################################
+# #############################################################################
 
 #!/bin/bash
 # This script backups all databases into separate sql statements in TimeStamp directory
