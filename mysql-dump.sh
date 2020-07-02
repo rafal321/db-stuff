@@ -19,6 +19,10 @@ mysql --force < 4-triggers-2020-06-20.sql
 # ----
 mysqldump --single-transaction --routines --triggers --events company | gzip > company_db-$(date +%F).dmp.gz
 gunzip company_db-2020-02-21.dmp.gz
+# ----
+mysqldump --single-transaction --routines --triggers --events --master-data=2 --flush-logs --databases ${databases} > dump-$(date +%F).sql
+CHANGE MASTER TO MASTER_HOST='10.35.241.160', MASTER_USER='replicator',  MASTER_PASSWORD='Rover123[]', MASTER_LOG_FILE='bin.000005', MASTER_LOG_POS=154;
+START SLAVE;
 # #############################################################################
 # #############################################################################
 #!/bin/bash
