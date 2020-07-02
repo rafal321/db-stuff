@@ -20,9 +20,7 @@ mysql --force < 4-triggers-2020-06-20.sql
 mysqldump --single-transaction --routines --triggers --events company | gzip > company_db-$(date +%F).dmp.gz
 gunzip company_db-2020-02-21.dmp.gz
 # ----
-mysqldump --single-transaction --routines --triggers --events --master-data=2 --flush-logs --databases ${databases} > dump-$(date +%F).sql
-CHANGE MASTER TO MASTER_HOST='10.35.241.160', MASTER_USER='replicator',  MASTER_PASSWORD='Rover123[]', MASTER_LOG_FILE='bin.000005', MASTER_LOG_POS=154;
-START SLAVE;
+
 # #############################################################################
 # #############################################################################
 #!/bin/bash
@@ -39,6 +37,11 @@ databases=`mysql -e "SELECT replace(GROUP_CONCAT(SCHEMA_NAME),',',' ') as list_d
 # Option 2
 mysqldump --single-transaction --skip-lock-tables --routines --events --triggers --databases ${databases} | gzip > dump4-${today}.sql.gz
 # To restore:    gunzip < dump3-2020-06-27.sql.gz | mysql
+
+# Option 3 - https://galeracluster.com/library/training/videos/galera-standard-replication.html
+mysqldump --single-transaction --routines --triggers --events --master-data=2 --flush-logs --databases ${databases} > dump-$(date +%F).sql
+CHANGE MASTER TO MASTER_HOST='10.35.241.160', MASTER_USER='replicator',  MASTER_PASSWORD='Rover123[]', MASTER_LOG_FILE='bin.000005', MASTER_LOG_POS=154;
+START SLAVE;                   (Test it as per codership vid had to manualy enter Log Pos etc...)
 
 # #############################################################################
 # #############################################################################
