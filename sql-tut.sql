@@ -1,24 +1,24 @@
 
-# --- 22. Beginning Update Statements --- v2
+# --- 22. Beginning Update Statements ---
 
 SHOW VARIABLES LIKE 'sql_safe_updates';
 SET sql_safe_updates=1;
 SET sql_safe_updates=0;
 
-# --- 23. Order By --- v2
-# --- 24. Limiting Results --- v2
+# --- 23. Order By ---
+# --- 24. Limiting Results ---
 
 select * from users order by Id limit 0, 10;   # default
 select * from users order by Id limit 5, 10;
 
-# --- 25. Mysql Types --- v2
-# --- 26. Text Types --- v2
-# --- 27. Floating Point Types and Ints --- v2
-# --- 28. The Bit Type --- v2
-# --- 29. Bool --- v2
-# --- 30. Blobs --- v2
+# --- 25. Mysql Types ---
+# --- 26. Text Types ---
+# --- 27. Floating Point Types and Ints ---
+# --- 28. The Bit Type ---
+# --- 29. Bool ---
+# --- 30. Blobs ---
 
-# --- 31. Time, Date and Year --- v2 # --- 32. Timestamp and Datetime --- v2
+# --- 31. Time, Date and Year --- # --- 32. Timestamp and Datetime ---
 SELECT NOW();
 SELECT year(NOW());
 SELECT month(NOW());
@@ -35,10 +35,19 @@ SELECT day(theDate) FROM moments;
 SELECT year(theDate) FROM moments;
 SELECT hour(theTime) FROM moments;
 
-# --- 33. Enumerations --- v2
-# --- 34. Brackets and Conditions Revisited --- v2
+# --- 33. Enumerations ---
+# --- 34. Brackets and Conditions Revisited ---
 
-
+# --- 37. The distinct keyword --- # --- 38. Counting Distinct Values ---
+SELECT DISTINCT name FROM users;
+SELECT COUNT(name) FROM users;
+SELECT COUNT(DISTINCT name) FROM users;
+SELECT COUNT(DISTINCT NAME, age) FROM users;
+# --- 39. Aggregate Functions ---
+SELECT MIN(age) FROM users;
+# --- 40. Arithmetic in MySQL ---
+# --- 42. Group By ---
+# --- 43. Having- Restricting Groups By Aggregate ---
 
 
 
