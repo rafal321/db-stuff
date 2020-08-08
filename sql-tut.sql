@@ -1,10 +1,24 @@
 
-# -----------Limit 24 ----------------------------
-select * from autotbl1 limit 1795, 100;
+# --- 22. Beginning Update Statements --- v2
 
-# --- 31. Time, Date and Year --- v2
-# --- 32. Timestamp and Datetime --- v2
+SHOW VARIABLES LIKE 'sql_safe_updates';
+SET sql_safe_updates=1;
+SET sql_safe_updates=0;
 
+# --- 23. Order By --- v2
+# --- 24. Limiting Results --- v2
+
+select * from users order by Id limit 0, 10;   # default
+select * from users order by Id limit 5, 10;
+
+# --- 25. Mysql Types --- v2
+# --- 26. Text Types --- v2
+# --- 27. Floating Point Types and Ints --- v2
+# --- 28. The Bit Type --- v2
+# --- 29. Bool --- v2
+# --- 30. Blobs --- v2
+
+# --- 31. Time, Date and Year --- v2 # --- 32. Timestamp and Datetime --- v2
 SELECT NOW();
 SELECT year(NOW());
 SELECT month(NOW());
@@ -20,6 +34,18 @@ INSERT INTO moments (theYear, theDate, theTime) VALUES (year(NOW()), date(NOW())
 SELECT day(theDate) FROM moments;
 SELECT year(theDate) FROM moments;
 SELECT hour(theTime) FROM moments;
+
+# --- 33. Enumerations --- v2
+# --- 34. Brackets and Conditions Revisited --- v2
+
+
+
+
+
+
+
+
+
 
 
 
