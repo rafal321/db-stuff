@@ -43,11 +43,28 @@ SELECT DISTINCT name FROM users;
 SELECT COUNT(name) FROM users;
 SELECT COUNT(DISTINCT name) FROM users;
 SELECT COUNT(DISTINCT NAME, age) FROM users;
+
 # --- 39. Aggregate Functions ---
 SELECT MIN(age) FROM users;
+
 # --- 40. Arithmetic in MySQL ---
-# --- 42. Group By ---
-# --- 43. Having- Restricting Groups By Aggregate ---
+SELECT (age+50) FROM users;
+SELECT SUM(age) FROM users;
+
+# --- 42. Group By --- # --- 43. Having- Restricting Groups By Aggregate ---
+SELECT AVG(weight) FROM survey GROUP BY gender;
+SELECT gender, AVG(weight) FROM survey GROUP BY gender;
+SELECT country, COUNT(*), AVG(smoke) FROM survey GROUP BY country ORDER BY AVG(smoke);
+
+SELECT country, MAX(weight) FROM survey GROUP BY country ORDER BY MAX(weight) desc;
+SELECT country, MAX(weight) FROM survey GROUP BY country HAVING MAX(weight) > 100 ORDER BY MAX(weight) desc;
+# having applies to the groups that you define
+
+__________________________________________
+### Section 13: Locks and Transactions ###
+73. Exclusive Table Locks
+
+RAF - NEXT
 
 
 
