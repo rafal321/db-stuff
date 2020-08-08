@@ -2,9 +2,24 @@
 # -----------Limit 24 ----------------------------
 select * from autotbl1 limit 1795, 100;
 
+# --- 31. Time, Date and Year --- v2
+# --- 32. Timestamp and Datetime --- v2
 
+SELECT NOW();
+SELECT year(NOW());
+SELECT month(NOW());
+SELECT time(NOW());
+SELECT date(NOW());
 
+CREATE TABLE moments (id INT PRIMARY KEY AUTO_INCREMENT, theYear YEAR, theDate DATE, theTime TIME);
+DESC moments;
+SELECT * FROM moments;
+INSERT INTO moments (theYear, theDate, theTime) VALUES ('2020', '2014-05-15', '8:10:23');
+INSERT INTO moments (theYear, theDate, theTime) VALUES (year(NOW()), date(NOW()), time(NOW()));
 
+SELECT day(theDate) FROM moments;
+SELECT year(theDate) FROM moments;
+SELECT hour(theTime) FROM moments;
 
 
 
