@@ -152,9 +152,31 @@ SELECT @@tx_isolation;
 
 -- Read locks (shared) Write locks (exclusive)
 
+# --- 83. ACID Isolation Levels ---
+SELECT @@tx_isolation;
 
+SET SESSION TRANSACTION LEVEL repeatable READ;  -- default anyway
 
+-- Serializable - the highest isolation transaction level
+-- Repetable read - 
+-- Read commited
+-- Read uncommited
 
+# --- 84. Serializable and Row vs Table Locking ---
+# --- 85. Demonstrating the Other Isolation Levels ---
+# --- 86. Rolling Back to Savepoints ---
+# --- 87. The Account Transfer Problem ---
+
+SET @transfer = 200;
+START TRANSACTION;
+UPDATE accounts SET balance = balance - @transfer WHERE id =1;
+UPDATE accounts SET balance = balance + @transfer WHERE id =2;
+COMMIT;
+
+SELECT * FROM accounts;
+
+__________________________________________
+### Section 14: MySQL Functions ###
 
 
 
