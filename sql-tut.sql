@@ -121,6 +121,59 @@ UNLOCK TABLES;
 -- InnoDB - acid complient
 -- MyIsam - not acid compliant, doesn't support transactions
 
+# --- 80. A Simple Transaction ---
+
+SET autocommit=0;
+SHOW VARIABLES LIKE 'auto%';
+
+create table books(id int primary key auto_increment, name varchar(50));
+insert into books (name) values ('The Mountain');
+delete from books where id=4; 
+SELECT * FROM books;
+COMMIT;
+ROLLBACK;
+
+# --- 81. Start Transaction 82. InnoDB Row Locking and Isolation ---
+SET autocommit=1;
+-- another way is to leave autocommit alone and start transaction
+
+START TRANSACTION;
+INSERT INTO books (name) VALUES ('The Train');
+COMMIT;
+-- on other connection
+START TRANSACTION;
+SELECT * FROM books;
+COMMIT;
+
+SELECT @@tx_isolation;
+
+-- Row level locking applies to indexes
+-- so if you don't have an index MySQL will lock whole table
+
+-- Read locks (shared) Write locks (exclusive)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
