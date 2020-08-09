@@ -63,9 +63,62 @@ SELECT country, MAX(weight) FROM survey GROUP BY country HAVING MAX(weight) > 10
 
 __________________________________________
 ### Section 13: Locks and Transactions ###
-73. Exclusive Table Locks
+# --- 73. Exclusive Table Locks ---
 
-RAF - NEXT
+LOCK TABLES users WRITE;
+# LOCK TABLES users write, drink write;
+insert into users (name, age) values('Raf', 10);
+
+UNLOCK TABLES;
+
+# --- 74. Shared Table Locks ---
+# less usefull, rarely need them
+LOCK TABLES users READ;
+UNLOCK TABLES;
+
+# --- 75. Using Variables  76. Setting Variables with Selects ---
+
+SET @USER = 'raf';
+SELECT @USER;
+SET @some_value = 95;
+SELECT @some_value;
+
+SELECT @avg_age := AVG(age) FROM users;
+SELECT @avg_age;
+
+# --- 77. A Select-Update Example ---
+DROP TABLE udemy.sales;
+CREATE TABLE udemy.sales (
+id INT PRIMARY KEY AUTO_INCREMENT,
+product_name VARCHAR(50),
+transaction_val DECIMAL(10,2) DEFAULT 0
+);
+CREATE TABLE sales_hist (recorded TIMESTAMP, total DECIMAL(10,2));
+
+INSERT INTO udemy.sales(product_name, transaction_val) VALUES ('bike4', 0.08);
+
+SELECT * FROM udemy.sales;
+
+SELECT @total := SUM(transaction_val) FROM udemy.sales;
+INSERT INTO udemy.sales_hist(recorded, total) VALUES(NOW(), @total);
+
+SELECT * FROM udemy.sales_hist;
+
+INSERT INTO udemy.sales_hist(recorded, total) VALUES(NOW(), (SELECT SUM(transaction_val) FROM udemy.sales));
+
+explain INSERT INTO udemy.sales_hist(recorded, total) VALUES(NOW(), (SELECT SUM(transaction_val) FROM udemy.sales));
+
+# --- 78. Fixing Select-Updates with Table Locks ---
+# good for myisam though it is not efficient for innodb
+# as we don't have to lock whole tables - we could individual rows
+LOCK TABLES udemy.sales READ, udemy.sales_hist WRITE;
+SELECT @total := SUM(transaction_val) FROM udemy.sales;
+INSERT INTO udemy.sales_hist(recorded, total) VALUES(NOW(), @total);
+UNLOCK TABLES;
+
+# --- 79. ACID ----
+-- InnoDB - acid complient
+-- MyIsam - not acid compliant, doesn't support transactions
 
 
 
