@@ -177,7 +177,45 @@ SELECT * FROM accounts;
 
 __________________________________________
 ### Section 14: MySQL Functions ###
+# --- 90. String Functions ---
+# --- 91. Dates, Intervals and Queries ---
 
+CREATE DATABASE test;
+USE test;
+
+CREATE TABLE dates(id int PRIMARY KEY AUTO_INCREMENT, applied date not null);
+SELECT * FROM dates;
+SELECT CURDATE();
+SELECT CURTIME();
+
+INSERT INTO dates (applied) VALUES ( CURDATE());
+INSERT INTO dates (applied) VALUES ( CURDATE() - INTERVAL 10 YEAR);
+
+SELECT CURDATE() - INTERVAL 36 day;
+SELECT DATE_SUB('2000-10-01', INTERVAL 3 MONTH);
+
+# --- 92. Date Diff and Dayname ---
+
+SELECT YEAR(applied) FROM dates WHERE applied = '2015-08-09';
+
+SET @born = '1990-05-15';
+SELECT YEAR(@born);
+SELECT DAYNAME(@born);
+SELECT DATEDIFF(CURDATE(), @born);
+SELECT DATEDIFF(CURDATE(), @born)/365;
+SELECT FROM_DAYS(DATEDIFF(CURDATE(), @born));
+
+# --- 93. Str_To_Date and Date_Format ---
+
+SELECT STR_TO_DATE('15/05/2020', '%d/%m/%Y');
+SELECT STR_TO_DATE('15abc/05/2020', '%dabc/%m/%Y') - INTERVAL 5 YEAR;
+
+SELECT DATE_FORMAT('2010-02-27', '%W %d %M %Y');
+
+# --- 94. Control Flow Functions ---
+
+SELECT if(False, 'Hello', 'Bye');
+SELECT if(4<6, 'Hello', 'Bye');
 
 
 
