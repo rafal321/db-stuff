@@ -1,3 +1,4 @@
+aws ec2 describe-instances --profile lab --instance-ids i-0af0ae0a6018c52f6 i-0ba21e7871e223894 i-0adf430398bdbbb8d | jq -c .Reservations[] | jq -c .Instances[].InstanceId,.Instances[].PrivateIpAddress,.Instances[].PublicIpAddress,.Instances[].Tags[]
 
 # --- 22. Beginning Update Statements ---
 
