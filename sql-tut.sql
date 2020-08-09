@@ -110,7 +110,8 @@ explain INSERT INTO udemy.sales_hist(recorded, total) VALUES(NOW(), (SELECT SUM(
 
 # --- 78. Fixing Select-Updates with Table Locks ---
 # good for myisam though it is not efficient for innodb
-# as we don't have to lock whole tables - we could individual rows
+# as we don't have to lock whole tables - we could lock individual rows
+
 LOCK TABLES udemy.sales READ, udemy.sales_hist WRITE;
 SELECT @total := SUM(transaction_val) FROM udemy.sales;
 INSERT INTO udemy.sales_hist(recorded, total) VALUES(NOW(), @total);
