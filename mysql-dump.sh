@@ -85,3 +85,9 @@ LC_NUMERIC=C printf " Total runtime: %d:%02d:%02d:%02.4f\n" $dd $dh $dm $ds
 # dump grants for all users
 mysql --skip-column-names -A -e"SELECT CONCAT('SHOW GRANTS FOR ''',user,'''@''',host,''';') FROM mysql.user WHERE user<>''" | mysql --skip-column-names -A | sed 's/$/;/g' > MySQLGrants.sql
 
+
+
+#_________________________________________________________________________
+# Archive stuff
+tar -c --use-compress-program=pigz -f name-of.tar directory/
+tar -xf name-of.tar
