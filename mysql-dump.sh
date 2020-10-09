@@ -89,5 +89,13 @@ mysql --skip-column-names -A -e"SELECT CONCAT('SHOW GRANTS FOR ''',user,'''@''',
 
 #_________________________________________________________________________
 # Archive stuff
-tar -c --use-compress-program=pigz -f name-of.tar directory/
-tar -xf name-of.tar
+tar -c --use-compress-program=pigz -f name-of.tgz directory/
+tar -xf name-of.tgz
+--------------------------
+tar -cf - directory/ | pigz -9 > archive-$(date +%F).tgz    3m27.728s		
+tar -cf - directory/ | pigz -1 > archive-$(date +%F).tgz	  0m37.064s
+tar -cf - directory/ | pigz > archive-$(date +%F).tgz		    1m35.293s	
+tar -xf archive-2020-10-09.tgz
+--------------------------
+
+
