@@ -85,8 +85,6 @@ LC_NUMERIC=C printf " Total runtime: %d:%02d:%02d:%02.4f\n" $dd $dh $dm $ds
 # dump grants for all users
 mysql --skip-column-names -A -e"SELECT CONCAT('SHOW GRANTS FOR ''',user,'''@''',host,''';') FROM mysql.user WHERE user<>''" | mysql --skip-column-names -A | sed 's/$/;/g' > MySQLGrants.sql
 
-
-
 #_________________________________________________________________________
 # Archive stuff             directory/ 2.8G
 tar -c --use-compress-program=pigz -f name-of.tgz directory/
@@ -96,10 +94,10 @@ tar -cf - directory/ | pigz -9 > archive-$(date +%F).tgz    3m27.728s	  1008M
 tar -cf - directory/ | pigz -1 > archive-$(date +%F).tgz	  0m37.064s	  1100M 1.1G
 tar -cf - directory/ | pigz > archive-$(date +%F).tgz		    1m35.293s	  1015M
 
-tar -xf archive-2020-10-09.tgz
+tar -xf archive-2020-10-08.tgz
 --------------------------
 zip -P password archive-$(date +%F).zip testing-mysqldump/*	2m23.285s 1015M (single-thread)
 zip -e archive-$(date +%F).zip testing-mysqldump/*
 
-unzip archive-2020-10-09.zip
+unzip archive-2020-10-08.zip
 
