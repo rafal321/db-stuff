@@ -11,6 +11,7 @@ mysql --force < 1-structure-2020-06-20.sql
 mysql --force < 2-routines-2020-06-20.sql
 mysql --force < 3-data-2020-06-20.sql
 mysql --force < 4-triggers-2020-06-20.sql
+# myloader -t 4 -d 3-data_2020-12-24
 
 # some verification
 # SELECT * FROM `information_schema`.`ROUTINES` LIMIT 1000\G
