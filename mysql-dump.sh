@@ -1,17 +1,14 @@
 # to dump and restore with mysqldump only - the Tarik & Emerson way
 
-# databases=db_name
 mysqldump --single-transaction --no-data --skip-triggers -v --databases sakila company > 1-structure-$(date +%F).sql
 mysqldump --single-transaction --no-data --no-create-info --skip-triggers --routines --skip-opt -v --databases sakila company > 2-routines-$(date +%F).sql
 mysqldump --single-transaction --no-data --no-create-info --skip-routines --triggers --skip-opt -v --databases sakila company > 4-triggers-$(date +%F).sql
 mysqldump --single-transaction -n -R -c -t -e -v -K --skip-routines --skip-triggers --databases sakila company > 3-data-$(date +%F).sql
-# mydumper --database=$databases --trx-consistency-only -t 4 -m --rows=500000 --compress -o ./3-data_$(date +%F)
 
 mysql --force < 1-structure-2020-06-20.sql
 mysql --force < 2-routines-2020-06-20.sql
 mysql --force < 3-data-2020-06-20.sql
 mysql --force < 4-triggers-2020-06-20.sql
-# myloader -t 4 -d 3-data_2020-12-24
 
 # some verification
 # SELECT * FROM `information_schema`.`ROUTINES` LIMIT 1000\G
@@ -22,7 +19,27 @@ mysql --force < 4-triggers-2020-06-20.sql
 # ----
 mysqldump --single-transaction --routines --triggers --events company | gzip > company_db-$(date +%F).dmp.gz
 gunzip company_db-2020-02-21.dmp.gz
-# ----
+# ----------------------------------------------------------------------------
+# --- My Dumper --------------------------------------------------------------
+#!/bin/bash
+databases=`mysql -e "SELECT replace(GROUP_CONCAT(SCHEMA_NAME),',',' ') as list_databases FROM information_schema.SCHEMATA WHERE SCHEMA_NAME NOT IN('common_schema', 'information_schema','mysql','performance_schema','sys');" | tr -d "|" | grep -v list_databases`
+mysqldump --single-transaction --no-data --skip-triggers -v --databases ${databases} > 1-structure_full_$(date +%F).sql
+mysqldump --single-transaction --no-data --no-create-info --skip-triggers --routines --skip-opt -v --databases $databases > 2-routines_full_$(date +%F).sql
+mysqldump --single-transaction --no-data --no-create-info --skip-routines --triggers --skip-opt -v --databases $databases > 4-triggers_full_$(date +%F).sql
+mydumper --regex '^(?!(mysql\.|test\.|sys\.))' --trx-consistency-only -t 4 -m --rows=500000 --compress -o ./3-data_$(date +%F)
+
+#!/bin/bash
+databases=my_db_name
+mysqldump --single-transaction --no-data --skip-triggers -v --databases ${databases} > 1-structure_full_$(date +%F).sql
+mysqldump --single-transaction --no-data --no-create-info --skip-triggers --routines --skip-opt -v --databases $databases > 2-routines_full_$(date +%F).sql
+mysqldump --single-transaction --no-data --no-create-info --skip-routines --triggers --skip-opt -v --databases $databases > 4-triggers_full_$(date +%F).sql
+mydumper --database=$databases --trx-consistency-only -t 4 -m --rows=500000 --compress -o ./3-data_$(date +%F)
+
+echo "------------------------------"
+echo "List: ${databases}"
+echo "------------------------------"
+
+myloader -u admin --password=my_pass --host=abc.cluster-cbtkbkg6ojhw.eu-west-1.rds.amazonaws.com -t 4 -d ./3-data_2020-10-20/
 
 # #############################################################################
 # #############################################################################
@@ -90,13 +107,12 @@ mysql --skip-column-names -A -e"SELECT CONCAT('SHOW GRANTS FOR ''',user,'''@''',
 
 #_________________________________________________________________________
 # Archive stuff             directory/ 2.8G
-tar -c --use-compress-program=pigz -f name-of.tgz directory/
-tar -xf name-of.tgz
+tar -c --use-compress-program=pigz -f name_of.tgz directory/
+tar -xf name_of.tgz
 --------------------------
 tar -cf - directory/ | pigz -9 > archive-$(date +%F).tgz    3m27.728s	  1008M       SLOW
 tar -cf - directory/ | pigz > archive-$(date +%F).tgz		    1m35.293s	  1015M       MEDIUM 
 tar -cf - directory/ | pigz -1 > archive-$(date +%F).tgz	  0m37.064s	  1100M 1.1G  FAST
-
 
 tar -xf archive-2020-10-08.tgz
 --------------------------
