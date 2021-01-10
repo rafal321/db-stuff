@@ -129,3 +129,7 @@ mysql --force < 1-structure_full_2020-01-09.sql
 mysql --force < 2-routines_full_2020-01-09.sql
 myloader -t 2 -d ./3-data_2020-01-09/
 mysql --force < 4-triggers_full_2020-01-09.sql
+
+echo "------------------------------"
+echo "List: ${databases}"
+echo "------------------------------"
