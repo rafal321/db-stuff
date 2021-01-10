@@ -19,27 +19,6 @@ mysql --force < 4-triggers-2020-06-20.sql
 # ----
 mysqldump --single-transaction --routines --triggers --events company | gzip > company_db-$(date +%F).dmp.gz
 gunzip company_db-2020-02-21.dmp.gz
-# ----------------------------------------------------------------------------
-# --- My Dumper --------------------------------------------------------------
-#!/bin/bash
-databases=`mysql -e "SELECT replace(GROUP_CONCAT(SCHEMA_NAME),',',' ') as list_databases FROM information_schema.SCHEMATA WHERE SCHEMA_NAME NOT IN('common_schema', 'information_schema','mysql','performance_schema','sys');" | tr -d "|" | grep -v list_databases`
-mysqldump --single-transaction --no-data --skip-triggers -v --databases ${databases} > 1-structure_full_$(date +%F).sql
-mysqldump --single-transaction --no-data --no-create-info --skip-triggers --routines --skip-opt -v --databases $databases > 2-routines_full_$(date +%F).sql
-mysqldump --single-transaction --no-data --no-create-info --skip-routines --triggers --skip-opt -v --databases $databases > 4-triggers_full_$(date +%F).sql
-mydumper --regex '^(?!(mysql\.|test\.|sys\.))' --trx-consistency-only -t 4 -m --rows=500000 --compress -o ./3-data_$(date +%F)
-
-#!/bin/bash
-databases=my_db_name
-mysqldump --single-transaction --no-data --skip-triggers -v --databases ${databases} > 1-structure_full_$(date +%F).sql
-mysqldump --single-transaction --no-data --no-create-info --skip-triggers --routines --skip-opt -v --databases $databases > 2-routines_full_$(date +%F).sql
-mysqldump --single-transaction --no-data --no-create-info --skip-routines --triggers --skip-opt -v --databases $databases > 4-triggers_full_$(date +%F).sql
-mydumper --database=$databases --trx-consistency-only -t 4 -m --rows=500000 --compress -o ./3-data_$(date +%F)
-
-echo "------------------------------"
-echo "List: ${databases}"
-echo "------------------------------"
-
-myloader -u admin --password=my_pass --host=abc.cluster-cbtkbkg6ojhw.eu-west-1.rds.amazonaws.com -t 4 -d ./3-data_2020-10-20/
 
 # #############################################################################
 # #############################################################################
@@ -121,3 +100,32 @@ zip -e archive-$(date +%F).zip testing-mysqldump/*
 
 unzip archive-2020-10-08.zip
 
+# #############################################################################
+# #############################################################################
+# --- My Dumper --------------------------------------------------------------
+
+# ==================================== ALL DBs
+#!/bin/bash
+databases=`mysql -e "SELECT replace(GROUP_CONCAT(SCHEMA_NAME),',',' ') as list_databases FROM information_schema.SCHEMATA WHERE SCHEMA_NAME NOT IN('common_schema', 'information_schema','mysql','performance_schema','sys');" | tr -d "|" | grep -v list_databases`
+mysqldump --single-transaction --no-data --skip-triggers -v --databases ${databases} > 1-structure_full_$(date +%F).sql
+mysqldump --single-transaction --no-data --no-create-info --skip-triggers --routines --skip-opt -v --databases $databases > 2-routines_full_$(date +%F).sql
+mysqldump --single-transaction --no-data --no-create-info --skip-routines --triggers --skip-opt -v --databases $databases > 4-triggers_full_$(date +%F).sql
+mydumper --regex '^(?!(mysql\.|test\.|sys\.))' --trx-consistency-only -t 4 -m --rows=500000 --compress -o ./3-data_$(date +%F)
+
+mysql --force < 1-structure_full_2020-01-09.sql
+mysql --force < 2-routines_full_2020-01-09.sql
+myloader -t 4 -d ./3-data_2020-01-09/
+mysql --force < 4-triggers_full_2020-01-09.sql
+
+#==================================== SINGLE DB
+#!/bin/bash
+databases=sakila
+mysqldump --single-transaction --no-data --skip-triggers -v --databases ${databases} > 1-structure_full_$(date +%F).sql
+mysqldump --single-transaction --no-data --no-create-info --skip-triggers --routines --skip-opt -v --databases $databases > 2-routines_full_$(date +%F).sql
+mysqldump --single-transaction --no-data --no-create-info --skip-routines --triggers --skip-opt -v --databases $databases > 4-triggers_full_$(date +%F).sql
+mydumper --database=$databases --trx-consistency-only -t 4 -m --rows=500000 --compress -o ./3-data_$(date +%F)
+
+mysql --force < 1-structure_full_2020-01-09.sql
+mysql --force < 2-routines_full_2020-01-09.sql
+myloader -t 2 -d ./3-data_2020-01-09/
+mysql --force < 4-triggers_full_2020-01-09.sql
