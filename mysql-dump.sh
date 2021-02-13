@@ -118,6 +118,9 @@ myloader -t 4 -d ./3-data_2020-01-09/
 mysql --force < 4-triggers_full_2020-01-09.sql
 
 #==================================== SINGLE DB
+declare -a dbs=("db1" "db2" "db3")
+echo "${dbs[@]}"
+-------------------------------------
 #!/bin/bash
 databases=sakila
 mysqldump --single-transaction --no-data --skip-triggers -v --databases ${databases} > 1-structure_full_$(date +%F).sql
