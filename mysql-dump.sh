@@ -17,7 +17,7 @@ mysql --force < 4-triggers-2020-06-20.sql
 # SELECT * FROM `information_schema`.`INNODB_SYS_INDEXES` ORDER BY 2 LIMIT 1000;
 # SELECT * FROM `information_schema`.`COLUMNS` WHERE TABLE_SCHEMA NOT IN ('mysql', 'information_schema', 'performance_schema') LIMIT 1000;
 # ----
-mysqldump --single-transaction --routines --triggers --events company | gzip > company_db-$(date +%F).dmp.gz
+mysqldump --single-transaction --routines --triggers --events company | gzip > company_db-$(date +%F).dmp.gz    (| gzip -c)
 gunzip company_db-2020-02-21.dmp.gz
 
 # #############################################################################
@@ -85,7 +85,7 @@ LC_NUMERIC=C printf " Total runtime: %d:%02d:%02d:%02.4f\n" $dd $dh $dm $ds
 mysql --skip-column-names -A -e"SELECT CONCAT('SHOW GRANTS FOR ''',user,'''@''',host,''';') FROM mysql.user WHERE user<>''" | mysql --skip-column-names -A | sed 's/$/;/g' > MySQLGrants.sql
 
 #_________________________________________________________________________
-# Archive stuff             directory/ 2.8G
+# Archive stuff             directory/ 2.8G                 (| gzip -c)
 tar -c --use-compress-program=pigz -f name_of.tgz directory/
 tar -xf name_of.tgz
 --------------------------
