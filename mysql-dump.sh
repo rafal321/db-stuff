@@ -20,6 +20,10 @@ mysql --force < 4-triggers-2020-06-20.sql
 mysqldump --single-transaction --routines --triggers --events company | gzip > company_db-$(date +%F).dmp.gz    (| gzip -c)
 gunzip company_db-2020-02-21.dmp.gz
 
+# ----
+for DB in $(mysql -Bse 'SHOW DATABASES' | grep -v 'information_schema\|mysql\|sys\|performance_schema'); do \
+   mysqldump --triggers --routines --events --set-gtid-purged=off $DB > "${DB}-bkp-$(date +%F).sql"; \
+done
 # #############################################################################
 # #############################################################################
 #!/bin/bash
