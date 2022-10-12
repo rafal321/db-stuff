@@ -30,6 +30,8 @@ DBS=$(mysql -Bse 'SHOW DATABASES' | grep -v 'information_schema\|mysql\|sys\|per
 mysqldump --triggers --routines --events --set-gtid-purged=off --databases ${DBS} | gzip -6 | aws s3 cp - s3://bucket/database/filename.sql.gz
 echo $(date)
 
+# dstat -tcd --disk-util --disk-tps 60
+
 # #############################################################################
 # #############################################################################
 #!/bin/bash
