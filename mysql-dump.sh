@@ -1,3 +1,26 @@
+===================================================================================================
+# 2323-12-23
+	https://cloudkatha.com/how-to-install-mysql-8-on-amazon-linux-2-instance/
+	https://dev.mysql.com/downloads/repo/yum/
+	
+yum install https://dev.mysql.com/get/mysql80-community-release-el7-11.noarch.rpm
+yum repolist enabled
+yum install mysql-community-server
+mysql -V												      //mysql  Ver 8.0.35 for Linux on x86_64 (MySQL Community Server - GPL)
+systemctl start mysqld 									//Starts MySQL service
+systemctl enable mysqld 								//Enabled mySQL service to restart on bot
+systemctl status mysqld 								//Check MySQL service running status
+grep 'temporary password' /var/log/mysqld.log
+mysql_secure_installation -p  
+-----------------------------------------------
+      Defaults
+      Server characterset:    utf8mb4
+      Db     characterset:    utf8mb4
+      Client characterset:    utf8mb4
+      Conn.  characterset:    utf8mb4
+===================================================================================================
+
+#================================================================================================================
 # to dump and restore with mysqldump only - the Tarik & Emerson way
 
 mysqldump --single-transaction --no-data --skip-triggers -v --databases sakila company > 1-structure-$(date +%F).sql
