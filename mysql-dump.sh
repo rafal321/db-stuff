@@ -7,6 +7,9 @@ yum install https://dev.mysql.com/get/mysql80-community-release-el7-11.noarch.rp
 yum repolist enabled
 yum install mysql-community-server
 mysql -V							//mysql  Ver 8.0.35 for Linux on x86_64 (MySQL Community Server - GPL)
+[1]
+mysql_configure.sh
+[2]
 systemctl start mysqld 						//Starts MySQL service
 systemctl enable mysqld 					//Enabled mySQL service to restart on bot
 systemctl status mysqld 					//Check MySQL service running status
