@@ -365,5 +365,5 @@ mysql -e "DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost',
 mysql -e "flush privileges;"
 
 ### REMOVE TMP FILES on /tmp #####
-rm -rf /tmp/*
+# rm -rf /tmp/*
 
