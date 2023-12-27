@@ -30,4 +30,12 @@ mysql> show variables like '%charac%';
 | character_sets_dir                              | /usr/share/mysql-8.0/charsets/ |
 | validate_password.changed_characters_percentage | 0                              |
 +-------------------------------------------------+--------------------------------+
+
+#>>>>>> ===================================================================================================
+# Amazon Linux release 2023 (Amazon Linux)
+# --- MySQL8 ---------------------
+wget https://dev.mysql.com/get/mysql80-community-release-el9-1.noarch.rpm
+dnf install mysql80-community-release-el9-1.noarch.rpm -y
+dnf install mysql -y
+#dnf install mysql-community-server -y
 #>>>>>> ===================================================================================================
