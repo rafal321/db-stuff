@@ -1,4 +1,7 @@
 #================================================================================================================
+# Dump direcly to s3 example:
+mysqldump --defaults-file=creds.cnf --set-gtid-purged=OFF -n -R -c -t -e -K --skip-routines --skip-triggers <db_name> | gzip | aws s3 cp - s3://<bucket_name>/<file_name>-data.sql.tgz --profile lab
+#================================================================================================================
 # to dump and restore with mysqldump only - the Tarik & Emerson way
 
 mysqldump --single-transaction --no-data --skip-triggers -v --databases sakila company > 1-structure-$(date +%F).sql
