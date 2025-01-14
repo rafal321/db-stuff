@@ -34,7 +34,7 @@
             }
         },
         {
-			      "Sid": "Sid placeholder - Raf",
+            "Sid": "Sid placeholder - Raf",
             "Effect": "Allow",
             "Principal": {
                 "AWS": [
