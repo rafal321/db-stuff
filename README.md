@@ -1,13 +1,13 @@
 
-## --- VIM START ------
+### --- VIM START ------
 ```
 
 gg          -> top of file
-shift-G     -> bottom of file
+G           -> bottom of file
 Ctrl-u      -> Scroll up half a page.
 Ctrl-d      -> down half a page.
-ctrl-b      -> to move a page screen back or - up
-ctrl-f      -> to move a page screen front or - down
+ctrl-b      -> page up
+ctrl-f      -> page down
 
 w    	    move to next word    
 b    	    move to prev word
@@ -22,11 +22,19 @@ p    	    paste line, under cursor
 de    	    delete till next word
 di"    	    delete within " "   - no need be within " "
 ci"    	    delete within " " , with insert mode
+u    	    undo
+v    	    highlight + d  to delete
+----------------------------------------
+%s/AAA/BBB/     replace
+vi -c "%norm! 150|D" dump.sql
+vi -c "set number | %norm! 15|D" dump.sql
+cut -c 1-150 big_dump.sql | grep -n "INSERT INTO \`my_table_name\`"
 
+sed -n '8820,8849p' /var/log/messages
 ```
-## --- VIM END --------
+### --- VIM END --------
 
-## --- K9S START ------
+### --- K9S START ------
 ```
 x po
 pulse
@@ -34,4 +42,4 @@ k9s -c pulse
 
 https://k9scli.io/
 ```
-## --- K9S END --------
+### --- K9S END --------
