@@ -15,15 +15,21 @@ b    	    move to prev word
 $    	    move to end of line
 
 /           -> Find a word
+
+y           copy line
+dd          cut line
+p           paste line, below cursor
 ----------------------------------------
 D    	    del till end of line
+DD          del till end of line + follow delete
+cc          cell line and enter insert mode
 dd    	    cut line
 p    	    paste line, under cursor
 de    	    delete till next word
 di"    	    delete within " "   - no need be within " "
 ci"    	    delete within " " , with insert mode
 u    	    undo
-v    	    highlight + d  to delete
+v    	    highlight + d  to delete, p to paste
 ----------------------------------------
 %s/AAA/BBB/     replace
 vi -c "%norm! 150|D" dump.sql
