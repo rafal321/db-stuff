@@ -37,6 +37,9 @@ vi -c "set number | %norm! 15|D" dump.sql
 cut -c 1-150 big_dump.sql | grep -n "INSERT INTO \`my_table_name\`"
 
 sed -n '8820,8849p' /var/log/messages
+
+> file.yaml                           empty file
+cat > file.yaml  <paste> + ctr+d      paste into file
 ```
 ### --- VIM END --------
 
