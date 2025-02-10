@@ -48,7 +48,7 @@ cat > file.yaml  <paste> + ctr+d      paste into file
 x po
 pulse
 k9s -c pulse
-
+k9s --readonly
 https://k9scli.io/
 ```
 ### --- K9S END --------
