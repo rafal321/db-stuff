@@ -2,6 +2,24 @@
 # Dump direcly to s3 example:
 mysqldump --defaults-file=creds.cnf --set-gtid-purged=OFF -n -R -c -t -e -K --skip-routines --skip-triggers <db_name> | gzip | aws s3 cp - s3://<bucket_name>/<file_name>-data.sql.tgz --profile lab
 #================================================================================================================
+Dump From RDS
+#!/bin/bash
+DBS=(
+schema1
+schema2
+schema3
+)
+echo ${DBS[@]}
+mysqldump --single-transaction --set-gtid-purged=OFF --no-data --skip-triggers --databases ${DBS[@]} > 1-structure-$(date +%F).sql
+echo "-- structure done" ; sleep 2
+mysqldump --single-transaction --set-gtid-purged=OFF --no-data --no-create-info --skip-triggers --routines --skip-opt --databases ${DBS[@]} > 2-routines-$(date +%F).sql
+echo "-- routines done" ; sleep 2
+mysqldump --single-transaction --set-gtid-purged=OFF --no-data --no-create-info --skip-routines --triggers --skip-opt --databases ${DBS[@]} > 4-triggers-$(date +%F).sql
+echo "-- triggers done" ; sleep 2
+mysqldump --single-transaction --set-gtid-purged=OFF -n -R -c -t -e -K --skip-routines --skip-triggers --databases ${DBS[@]} | gzip > 3-data-$(date +%F).sql.gz
+echo "-- data done"
+
+# ========================
 # to dump and restore with mysqldump only - the Tarik & Emerson way
 
 mysqldump --single-transaction --no-data --skip-triggers -v --databases sakila company > 1-structure-$(date +%F).sql
