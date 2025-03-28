@@ -18,7 +18,7 @@ mysqldump --single-transaction --set-gtid-purged=OFF --no-data --no-create-info 
 echo "-- triggers done" ; sleep 2
 mysqldump --single-transaction --set-gtid-purged=OFF -n -R -c -t -e -K --skip-routines --skip-triggers --databases ${DBS[@]} | gzip > 3-data-$(date +%F).sql.gz
 echo "-- data done"
-
+Raf, remember when restore to preserve comments: -c, --comments < dumpfile.sql 
 # ========================
 # to dump and restore with mysqldump only - the Tarik & Emerson way
 
