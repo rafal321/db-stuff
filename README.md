@@ -50,5 +50,8 @@ pulse
 k9s -c pulse
 k9s --readonly
 https://k9scli.io/
+k9s NOT:
+[1] /
+[2] !kube-system|default
 ```
 ### --- K9S END --------
