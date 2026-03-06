@@ -1,3 +1,11 @@
+DUMP From Aurora 3 | 2026
+mysqldump --single-transaction --triggers --routines --events \
+  --set-gtid-purged=off --order-by-primary --hex-blob \
+  --default-character-set=utf8mb4 my_schema > my_schema.sql
+
+mydumper -h your-aurora-endpoint -u username -p password \
+  -B my_schema -t 4 -o my_schema_dump/
+#================================================================================================================
 date ; gunzip < uat_customer.sql.gz | mysql -c --force ; date
 #================================================================================================================
 # Dump direcly to s3 example:
